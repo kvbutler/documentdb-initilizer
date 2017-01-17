@@ -1,5 +1,8 @@
 var fs = require('fs');
-var lib = require("../lib/lib.js")
+var proxyquire =  require('proxyquire')
+var core = require('../lib/core.js');
+var lib = proxyquire('../lib/lib.js', { './core.js': core});
+
 
 describe("lib test", function () {
 
@@ -15,6 +18,19 @@ describe("lib test", function () {
         expect(objs[1].body).not.toBe(null);
         expect(objs[2].body).not.toBe(null);
     
+        done();
+    })
+
+    it("should save store proc", function (done) {
+
+        var storeProcs = [
+            {id:"1"},{id:"2"},{id:"3"}
+        ]
+        
+        spyOn(core, 'saveStoreProc');        
+
+
+
         done();
     })
 
