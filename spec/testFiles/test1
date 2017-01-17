@@ -1,0 +1,20 @@
+
+[{
+    id: "helloWorld",
+    body: function () {
+        var context = getContext();
+        var response = context.getResponse();
+
+        response.setBody("Hello, World");
+    }
+},
+{
+    id: "helloWorld2",
+    body: function () {
+        var context = getContext();
+        var response = context.getResponse();
+
+        response.setBody("Hello, World2");
+    }
+}]
+

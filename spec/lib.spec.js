@@ -9,9 +9,11 @@ describe("lib test", function () {
 
         var objs = lib.loadFiles(dir);
 
-        expect(objs.length).toBe(1);
+        expect(objs.length).toBe(3);
         expect(objs[0].id).toBe("helloWorld");
         expect(objs[0].body).not.toBe(null);
+        expect(objs[1].body).not.toBe(null);
+        expect(objs[2].body).not.toBe(null);
     
         done();
     })
