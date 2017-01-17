@@ -1,0 +1,22 @@
+{
+  "name": "documentdb-initializer",
+  "version": "1.0.0",
+  "description": "A tool to initialise documentDb base on config",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "docdb": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "documentdb": "^1.10.1",
+    "json5": "^0.5.1"
+  },
+  "devDependencies": {
+    "jasmine": "^2.5.3"
+  }
+}
