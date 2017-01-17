@@ -4,7 +4,7 @@ describe("lib test", function () {
         var fs = require('fs');
         var lib = require('../lib/lib.js');
         var dir = process.cwd() + '/spec/testFiles';
-        
+
         var objs = lib.loadFiles(dir);
 
         expect(objs.length).toBe(3);
@@ -12,23 +12,43 @@ describe("lib test", function () {
         expect(objs[0].body).not.toBe(null);
         expect(objs[1].body).not.toBe(null);
         expect(objs[2].body).not.toBe(null);
-    
+
         done();
     })
 
     it("should save store proc", function (done) {
 
-        var proxyquire =  require('proxyquire')
+        var proxyquire = require('proxyquire')
         var core = require('../lib/core.js');
-        var lib = proxyquire('../lib/lib.js', { './core.js': core});
-        var dir = process.cwd() + '/spec/testFiles';
-        var storeProcs = [
-            {id:"1"},{id:"2"},{id:"3"}
-        ]
-        
-        spyOn(core, 'saveStoreProc');        
+        var lib = proxyquire('../lib/lib.js', { './core.js': core });
+        var dir = 'testDir';
+        var storeProcs = [{
+            id: "helloWorld",
+            body: function () {
+                var context = getContext();
+                var response = context.getResponse();
 
+                response.setBody("Hello, World");
+            }
+        },
+        {
+            id: "helloWorld2",
+            body: function () {
+                var context = getContext();
+                var response = context.getResponse();
 
+                response.setBody("Hello, World2");
+            }
+        }];
+
+        spyOn(lib, "loadFiles").and.returnValue(storeProcs);
+
+        spyOn(core, 'saveStoreProc');
+
+        lib.createStoreProcs(dir);
+
+        expect(lib.loadFiles).toHaveBeenCalledWith(dir);
+        expect(core.saveStoreProc.calls.count()).toBe(storeProcs.length);
 
         done();
     })
