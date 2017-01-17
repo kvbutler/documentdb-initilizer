@@ -27,9 +27,9 @@ var config = json5.parse(fileContent);
 validateConfig(config);
 
 function validateConfig(config){
-    console.log(config.url);
-    console.log(config.key);
-    console.log(config.collection);
+    console.log("Database Url: " + config.url);
+    console.log("Key: " + config.key);
+    console.log("Colelction: " + config.collection);
 }
 
 function fileExists(filePath)
