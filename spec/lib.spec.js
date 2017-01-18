@@ -16,7 +16,7 @@ describe("lib test", function () {
         done();
     })
 
-    it("should save store proc", function (done) {
+    it("should try to save store procs", function (done) {
 
         var proxyquire = require('proxyquire')
         var core = require('../lib/core.js');
@@ -24,7 +24,7 @@ describe("lib test", function () {
         var dir = 'testDir';
         var storeProcs = [{
             id: "helloWorld",
-            body: function () {
+            serverScript: function () {
                 var context = getContext();
                 var response = context.getResponse();
 
@@ -33,7 +33,7 @@ describe("lib test", function () {
         },
         {
             id: "helloWorld2",
-            body: function () {
+            serverScript: function () {
                 var context = getContext();
                 var response = context.getResponse();
 
@@ -45,7 +45,7 @@ describe("lib test", function () {
 
         spyOn(core, 'saveStoreProc');
 
-        lib.createStoreProcs(dir);
+        lib.createStoreProcs(dir, {});
 
         expect(lib.loadFiles).toHaveBeenCalledWith(dir);
         expect(core.saveStoreProc.calls.count()).toBe(storeProcs.length);

@@ -1,7 +1,7 @@
 
-[{
+var objs = [{
     id: "helloWorld",
-    body: function () {
+    serverScript: function () {
         var context = getContext();
         var response = context.getResponse();
 
@@ -10,7 +10,7 @@
 },
 {
     id: "helloWorld2",
-    body: function () {
+    serverScript: function () {
         var context = getContext();
         var response = context.getResponse();
 

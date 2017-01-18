@@ -1,6 +1,6 @@
-{
+var objs = {
     id: "helloWorld3",
-    body: function () {
+    serverScript: function () {
         var context = getContext();
         var response = context.getResponse();
 
