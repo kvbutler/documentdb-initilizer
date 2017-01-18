@@ -12,6 +12,7 @@
     "docdb": "./index.js"
   },
   "dependencies": {
+    "colors": "^1.1.2",
     "commander": "^2.9.0",
     "documentdb": "^1.10.1",
     "documentdb-q-promises": "^1.6.0",
