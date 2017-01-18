@@ -1,6 +1,6 @@
 {
   "name": "documentdb-initializer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A tool to initialise documentDb base on config",
   "keywords": [
     "documentdb"
