@@ -14,6 +14,15 @@ describe("core test", function () {
             response.setBody("Hello, World");
         }
     };
+    var trigger = {
+        id: "helloWorld",
+        triggerType: "Pre",
+        triggerOperation: "All",
+        serverScript: function () {
+            var context = getContext();
+            var response = context.getResponse();
+        }
+    }
 
     beforeEach(function () {
         testConfig = {
@@ -63,7 +72,7 @@ describe("core test", function () {
         }
         spyOn(fakeClient, "upsertStoredProcedureAsync").and.callThrough();
 
-        core.saveStoreProc(storeProc);
+        core.saveStoreProc(storeProc, {});
 
         expect(fakeClient.upsertStoredProcedureAsync).toHaveBeenCalledWith(testLink, storeProc);
 
@@ -77,6 +86,40 @@ describe("core test", function () {
         }, 500);
 
     })
+
+      it("should try to save one trigger", function (done) {
+        var core = require('../lib/core.js');
+        var testId = trigger.id;
+        prepareCommonSpies(core);
+        fakeClient.upsertTriggerAsync = function (obj, config) {
+            var deferred = $q.defer();
+            setTimeout(function () {
+                deferred.resolve({
+                    resource: {
+                        id: testId
+                    }
+                });
+            }, 200);
+
+            return deferred.promise;
+        }
+        spyOn(fakeClient, "upsertTriggerAsync").and.callThrough();
+
+        core.saveTrigger(trigger, {});
+
+        expect(fakeClient.upsertTriggerAsync).toHaveBeenCalledWith(testLink, trigger);
+
+        setTimeout(function () {
+            expect(console.log).toHaveBeenCalledWith("Successfully created trigger: " + testId);
+
+            fakeClient.upsertTriggerAsync.calls.reset();
+            console.log.and.stub();
+            done();
+
+        }, 500);
+
+    })
+
 
     function prepareCommonSpies(core) {
         spyOn(core, "getClient").and.returnValue(fakeClient);
