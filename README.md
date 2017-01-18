@@ -107,7 +107,7 @@ var objs = [
 Example of UserDefinedFunction file:
 ```javascript
 var objs = [{
-    name: "tax",
+    id: "tax",
     serverScript: function tax(income) {
         if(income == undefined) 
             throw 'no input';
