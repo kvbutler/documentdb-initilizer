@@ -38,12 +38,30 @@ if (config.storedProcPath && config.storedProcPath !== "")
 else
     console.log("Skip process stored procs...");
 
+if (config.triggerPath && config.triggerPath !== "")
+    lib.createTriggers(config.triggerPath, config);
+else
+    console.log("Skip process triggers...");
+
+if (config.documentPath && config.documentPath !== "")
+    lib.createDocuments(config.documentPath, config);
+else
+    console.log("Skip process documents...");
+
+if (config.userDefinedFunctionPath && config.userDefinedFunctionPath !== "")
+    lib.createUserDefinedFunctions(config.userDefinedFunctionPath, config);
+else
+    console.log("Skip process user defined functions...");
+
 function displayConfig(config){
     console.log("Database Url: " + config.url);
     console.log("Key: " + config.key);
     console.log("Database: " + config.database);
     console.log("Colelction: " + config.collection);
     console.log("StoredProc Path: " + config.storedProcPath);
+    console.log("Trigger Path: " + config.triggerPath);
+    console.log("Document Path: " + config.documentPath);
+    console.log("UserDefinedFunctionPath Path: " + config.userDefinedFunctionPath);
 }
 
 function fileExists(filePath)
