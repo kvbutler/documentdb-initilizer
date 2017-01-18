@@ -1,4 +1,4 @@
-### In development
+# STILL IN DEVELOPMENT!!!
 
 
 This is a npm package to initialise and update a collection in document db. You can create and update store procedure, trigger and seed data in a collection using npm commandline. 
