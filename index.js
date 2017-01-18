@@ -33,8 +33,8 @@ config.storedProcsPath =  dir + '/' + config.storedProcsPath;
 
 displayConfig(config);
 
-if (config.storedProcsPath && config.storedProcsPath !== "")
-    lib.createStoredProcs(config.storedProcsPath, config);
+if (config.storedProcPath && config.storedProcPath !== "")
+    lib.createStoredProcs(config.storedProcPath, config);
 else
     console.log("Skip process stored procs...");
 
@@ -43,7 +43,7 @@ function displayConfig(config){
     console.log("Key: " + config.key);
     console.log("Database: " + config.database);
     console.log("Colelction: " + config.collection);
-    console.log("StoredProcs Path: " + config.storedProcsPath);
+    console.log("StoredProc Path: " + config.storedProcPath);
 }
 
 function fileExists(filePath)

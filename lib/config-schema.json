@@ -14,7 +14,7 @@
         "collection": {
             "type": "string"
         },
-        "storedProcsPath": {
+        "storedProcPath": {
             "type": "string"
         },
         "triggerPath": {
