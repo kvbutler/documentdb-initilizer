@@ -103,12 +103,12 @@ describe("lib test", function () {
             id: "helloWorld",
             userDefinedFunctionType: "Javascript",
             serverScript: function () {
-                    var context = getContext();
-                    var response = context.getResponse();
+                var context = getContext();
+                var response = context.getResponse();
 
-                    return "";
-                }
-            },
+                return "";
+            }
+        },
             {
                 id: "helloWorld2",
                 userDefinedFunctionType: "Javascript",
@@ -128,6 +128,34 @@ describe("lib test", function () {
         expect(lib.loadFiles).toHaveBeenCalledWith(dir);
         expect(core.saveUserDefinedFunction).toHaveBeenCalledWith(userDefinedFunctions[0], testConfig);
         expect(core.saveUserDefinedFunction.calls.count()).toBe(userDefinedFunctions.length);
+
+        done();
+    })
+
+    it("should try to save documents", function (done) {
+
+        var proxyquire = require('proxyquire')
+        var core = require('../lib/core.js');
+        var lib = proxyquire('../lib/lib.js', { './core.js': core });
+        var dir = 'testDir';
+        var documents = [{
+                id: "helloWorld",
+                name: "test1"
+            },
+            {
+                id: "helloWorld2",
+                name: "test2"
+            }];
+
+        spyOn(lib, "loadFiles").and.returnValue(documents);
+
+        spyOn(core, 'saveDocument');
+
+        lib.createDocuments(dir, {});
+
+        expect(lib.loadFiles).toHaveBeenCalledWith(dir);
+        expect(core.saveDocument).toHaveBeenCalledWith(documents[0], testConfig);
+        expect(core.saveDocument.calls.count()).toBe(documents.length);
 
         done();
     })

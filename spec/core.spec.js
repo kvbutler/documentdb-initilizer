@@ -33,6 +33,10 @@ describe("core test", function () {
             return "";        
         }
     }
+    var document = {
+        id: "helloWorld",
+        name: "test"
+    }
 
     beforeEach(function () {
         testConfig = {
@@ -156,6 +160,39 @@ describe("core test", function () {
             expect(console.log).toHaveBeenCalledWith("Successfully created userDefinedFunction: " + testId);
 
             fakeClient.upsertUserDefinedFunctionAsync.calls.reset();
+            console.log.and.stub();
+            done();
+
+        }, 500);
+
+    })
+
+    it("should try to save one document", function (done) {
+        var core = require('../lib/core.js');
+        var testId = document.id;
+        prepareCommonSpies(core);
+        fakeClient.upsertDocumentAsync = function (obj, config) {
+            var deferred = $q.defer();
+            setTimeout(function () {
+                deferred.resolve({
+                    resource: {
+                        id: testId
+                    }
+                });
+            }, 200);
+
+            return deferred.promise;
+        }
+        spyOn(fakeClient, "upsertDocumentAsync").and.callThrough();
+
+        core.saveDocument(document, {});
+
+        expect(fakeClient.upsertDocumentAsync).toHaveBeenCalledWith(testLink, document);
+
+        setTimeout(function () {
+            expect(console.log).toHaveBeenCalledWith("Successfully created document: " + testId);
+
+            fakeClient.upsertDocumentAsync.calls.reset();
             console.log.and.stub();
             done();
 
