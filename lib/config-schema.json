@@ -1,0 +1,37 @@
+{
+    "id": "/Config",
+    "type": "object",
+    "properties": {
+        "url": {
+            "type": "string"
+        },
+        "key": {
+            "type": "string"
+        },
+        "database": {
+            "type": "string"
+        },
+        "collection": {
+            "type": "string"
+        },
+        "storedProcsPath": {
+            "type": "string"
+        },
+        "triggerPath": {
+            "type": "string"
+        },
+        "documentPath": {
+            "type": "string"
+        },
+        "userDefinedFunctionPath": {
+            "type": "string"
+        }
+
+    },
+    "required": [
+        "url",
+        "key",
+        "database",
+        "collection"
+    ]
+}

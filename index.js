@@ -3,6 +3,8 @@
 var fs = require('fs');
 var program = require('commander');
 var json5 = require('json5');
+var lib = require('./lib/lib.js');
+var validator = require('./lib/validator.js');
 
 var configFile = '';
 
@@ -24,20 +26,24 @@ if (!fileExists(configFile)) {
 var fileContent = fs.readFileSync(configFile, 'utf-8');
 var config = json5.parse(fileContent);
 
-config.storeProcsPath =  dir + '/' + config.storeProcsPath;
+if (!validator.validateConfig(config))
+    process.exit(1);
 
-validateConfig(config);
+config.storedProcsPath =  dir + '/' + config.storedProcsPath;
 
-var lib = require('./lib/lib.js');
+displayConfig(config);
 
-lib.createStoreProcs(config.storeProcsPath, config);
+if (config.storedProcsPath && config.storedProcsPath !== "")
+    lib.createStoredProcs(config.storedProcsPath, config);
+else
+    console.log("Skip process stored procs...");
 
-function validateConfig(config){
+function displayConfig(config){
     console.log("Database Url: " + config.url);
     console.log("Key: " + config.key);
     console.log("Database: " + config.database);
     console.log("Colelction: " + config.collection);
-    console.log("Store Procs Path: " + config.storeProcsPath);
+    console.log("StoredProcs Path: " + config.storedProcsPath);
 }
 
 function fileExists(filePath)
