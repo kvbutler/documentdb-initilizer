@@ -2,12 +2,21 @@
   "name": "documentdb-initializer",
   "version": "1.0.0",
   "description": "A tool to initialise documentDb base on config",
+  "keywords": ["documentdb"],
+  "homepage": "https://github.com/BaronChen/documentdb-initilizer",
+  "bugs": {
+    "url" : "https://github.com/BaronChen/documentdb-initilizer/issues"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
-  "author": "",
+  "author": "baron chen",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BaronChen/documentdb-initilizer.git"
+  },
   "bin": {
     "docdb": "./index.js"
   },
