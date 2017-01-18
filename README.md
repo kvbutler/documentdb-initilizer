@@ -1,7 +1,9 @@
-# STILL IN DEVELOPMENT!!!
-
+DocumentDb initializer
 
 This is a npm package to initialise and update a collection in document db. You can create and update store procedure, trigger and seed data in a collection using npm commandline. 
+
+Please refer to [github](https://github.com/BaronChen/documentdb-initilizer) for more detail.
+
 
 ### Installation
 ```sh
