@@ -16,14 +16,14 @@ docdb <config-file-path>
 Example of config file:
 ```json
 {
-    url: "<url>",
-    key: "<key>",
-    database: "<databaseId>",
-    collection: "<collectionId>",
-    storedProcPath: "<path-to-storeProcs>",
-    triggerPath: "<path-to-triggers>",
-    documentPath: "<path-to-documents>",
-    userDefinedFunctionPath: "<path-to-userDefinedFunction>"
+    "url": "<url>",
+    "key": "<key>",
+    "database": "<databaseId>",
+    "collection": "<collectionId>",
+    "storedProcPath": "<path-to-storeProcs>",
+    "triggerPath": "<path-to-triggers>",
+    "documentPath": "<path-to-documents>",
+    "userDefinedFunctionPath": "<path-to-userDefinedFunction>"
 }
 ```
 **url**: The url to connect to your documentdb
