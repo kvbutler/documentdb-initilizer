@@ -86,6 +86,42 @@ var objs = [{
 }]
 ```
 
+Example of Document file:
+```javascript
+var objs = [
+    {
+        id: "testDocument1",
+        name: "testName1"
+    },
+    {
+        id: "testDocument2",
+        name: "testName2"
+    },
+    {
+        id: "testDocument3",
+        name: "testName3"
+    }
+]
+```
+
+Example of UserDefinedFunction file:
+```javascript
+var objs = [{
+    name: "tax",
+    serverScript: function tax(income) {
+        if(income == undefined) 
+            throw 'no input';
+
+        if (income < 1000) 
+            return income * 0.1;
+        else if (income < 10000) 
+            return income * 0.2;
+        else
+            return income * 0.4;
+    }
+}]
+```
+
 
 ### Ongoing....
 
