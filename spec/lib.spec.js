@@ -1,5 +1,7 @@
 describe("lib test", function () {
 
+    var testConfig = {};
+
     it("should load objects from file", function (done) {
         //leave fs not mcoked on purpose. Want to check if the file system actually work.
         var fs = require('fs');
@@ -17,13 +19,13 @@ describe("lib test", function () {
         done();
     })
 
-    it("should try to save store procs", function (done) {
+    it("should try to save stored procs", function (done) {
 
         var proxyquire = require('proxyquire')
         var core = require('../lib/core.js');
         var lib = proxyquire('../lib/lib.js', { './core.js': core });
         var dir = 'testDir';
-        var storeProcs = [{
+        var storedProcs = [{
             id: "helloWorld",
             serverScript: function () {
                 var context = getContext();
@@ -39,14 +41,15 @@ describe("lib test", function () {
                 }
             }];
 
-        spyOn(lib, "loadFiles").and.returnValue(storeProcs);
+        spyOn(lib, "loadFiles").and.returnValue(storedProcs);
 
-        spyOn(core, 'saveStoreProc');
+        spyOn(core, 'saveStoredProc');
 
-        lib.createStoreProcs(dir, {});
+        lib.createStoredProcs(dir, testConfig);
 
         expect(lib.loadFiles).toHaveBeenCalledWith(dir);
-        expect(core.saveStoreProc.calls.count()).toBe(storeProcs.length);
+        expect(core.saveStoredProc).toHaveBeenCalledWith(storedProcs[0], testConfig);
+        expect(core.saveStoredProc.calls.count()).toBe(storedProcs.length);
 
         done();
     })
@@ -67,15 +70,15 @@ describe("lib test", function () {
 
             }
         },
-        {
-            id: "helloWorld2",
-            triggerType: "Post",
-            triggerOperation: "Create",
-            serverScript: function () {
-                var context = getContext();
-                var response = context.getResponse();
-            }
-        }];
+            {
+                id: "helloWorld2",
+                triggerType: "Post",
+                triggerOperation: "Create",
+                serverScript: function () {
+                    var context = getContext();
+                    var response = context.getResponse();
+                }
+            }];
 
         spyOn(lib, "loadFiles").and.returnValue(triggers);
 
@@ -84,7 +87,47 @@ describe("lib test", function () {
         lib.createTriggers(dir, {});
 
         expect(lib.loadFiles).toHaveBeenCalledWith(dir);
+        expect(core.saveTrigger).toHaveBeenCalledWith(triggers[0], testConfig);
         expect(core.saveTrigger.calls.count()).toBe(triggers.length);
+
+        done();
+    })
+
+    it("should try to save userDefinedFunctions", function (done) {
+
+        var proxyquire = require('proxyquire')
+        var core = require('../lib/core.js');
+        var lib = proxyquire('../lib/lib.js', { './core.js': core });
+        var dir = 'testDir';
+        var userDefinedFunctions = [{
+            id: "helloWorld",
+            userDefinedFunctionType: "Javascript",
+            serverScript: function () {
+                    var context = getContext();
+                    var response = context.getResponse();
+
+                    return "";
+                }
+            },
+            {
+                id: "helloWorld2",
+                userDefinedFunctionType: "Javascript",
+                serverScript: function () {
+                    var context = getContext();
+                    var response = context.getResponse();
+                    return "";
+                }
+            }];
+
+        spyOn(lib, "loadFiles").and.returnValue(userDefinedFunctions);
+
+        spyOn(core, 'saveUserDefinedFunction');
+
+        lib.createUserDefinedFunctions(dir, {});
+
+        expect(lib.loadFiles).toHaveBeenCalledWith(dir);
+        expect(core.saveUserDefinedFunction).toHaveBeenCalledWith(userDefinedFunctions[0], testConfig);
+        expect(core.saveUserDefinedFunction.calls.count()).toBe(userDefinedFunctions.length);
 
         done();
     })

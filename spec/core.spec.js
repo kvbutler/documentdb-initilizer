@@ -5,7 +5,7 @@ describe("core test", function () {
     var testConfig = {};
     var fakeClient = {};
     var testLink = "testLink";
-    var storeProc = {
+    var storedProc = {
         id: "helloWorld",
         serverScript: function () {
             var context = getContext();
@@ -21,6 +21,16 @@ describe("core test", function () {
         serverScript: function () {
             var context = getContext();
             var response = context.getResponse();
+        }
+    }
+    var userDefinedFunction = {
+        id: "helloWorld",
+        userDefinedFunctionType: "Javascript",
+        serverScript: function () {
+            var context = getContext();
+            var response = context.getResponse();
+
+            return "";        
         }
     }
 
@@ -54,9 +64,9 @@ describe("core test", function () {
         done();
     })
 
-    it("should try to save one store proc", function (done) {
+    it("should try to save one stored proc", function (done) {
         var core = require('../lib/core.js');
-        var testId = storeProc.id;
+        var testId = storedProc.id;
         prepareCommonSpies(core);
         fakeClient.upsertStoredProcedureAsync = function (obj, config) {
             var deferred = $q.defer();
@@ -72,12 +82,12 @@ describe("core test", function () {
         }
         spyOn(fakeClient, "upsertStoredProcedureAsync").and.callThrough();
 
-        core.saveStoreProc(storeProc, {});
+        core.saveStoredProc(storedProc, {});
 
-        expect(fakeClient.upsertStoredProcedureAsync).toHaveBeenCalledWith(testLink, storeProc);
+        expect(fakeClient.upsertStoredProcedureAsync).toHaveBeenCalledWith(testLink, storedProc);
 
         setTimeout(function () {
-            expect(console.log).toHaveBeenCalledWith("Successfully created stored procedure: " + testId);
+            expect(console.log).toHaveBeenCalledWith("Successfully created storedProc: " + testId);
 
             fakeClient.upsertStoredProcedureAsync.calls.reset();
             console.log.and.stub();
@@ -87,7 +97,7 @@ describe("core test", function () {
 
     })
 
-      it("should try to save one trigger", function (done) {
+    it("should try to save one trigger", function (done) {
         var core = require('../lib/core.js');
         var testId = trigger.id;
         prepareCommonSpies(core);
@@ -120,6 +130,38 @@ describe("core test", function () {
 
     })
 
+    it("should try to save one userDefinedFunction", function (done) {
+        var core = require('../lib/core.js');
+        var testId = userDefinedFunction.id;
+        prepareCommonSpies(core);
+        fakeClient.upsertUserDefinedFunctionAsync = function (obj, config) {
+            var deferred = $q.defer();
+            setTimeout(function () {
+                deferred.resolve({
+                    resource: {
+                        id: testId
+                    }
+                });
+            }, 200);
+
+            return deferred.promise;
+        }
+        spyOn(fakeClient, "upsertUserDefinedFunctionAsync").and.callThrough();
+
+        core.saveUserDefinedFunction(userDefinedFunction, {});
+
+        expect(fakeClient.upsertUserDefinedFunctionAsync).toHaveBeenCalledWith(testLink, userDefinedFunction);
+
+        setTimeout(function () {
+            expect(console.log).toHaveBeenCalledWith("Successfully created userDefinedFunction: " + testId);
+
+            fakeClient.upsertUserDefinedFunctionAsync.calls.reset();
+            console.log.and.stub();
+            done();
+
+        }, 500);
+
+    })
 
     function prepareCommonSpies(core) {
         spyOn(core, "getClient").and.returnValue(fakeClient);
