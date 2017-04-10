@@ -8,6 +8,7 @@ var validator = require('./lib/validator.js');
 var colors = require('colors/safe');
 var configFile = '';
 
+
 program.arguments('<config>').action(function (config) {
     configFile = config;
 }).parse(process.argv);
@@ -31,25 +32,43 @@ if (!validator.validateConfig(config))
 config.storedProcsPath =  dir + '/' + config.storedProcsPath;
 displayConfig(config);
 
-if (config.storedProcPath && config.storedProcPath !== "")
-    lib.createStoredProcs(config.storedProcPath, config);
-else
-    console.log(colors.yellow("Skip process stored procs..."));
+console.log(colors.blue('****************** Attempting to Seed Collection ******************'));
+lib.dropCollection(config).then(() => 
+	{ 
+		console.log('Collection \'' + config.collection + '\' deleted');
+		lib.createCollection(config).then(() => 
+		{
+			console.log('Collection \'' + config.collection + '\' created');
+			console.log(colors.blue('*******************************************************************'));
+			console.log('\n***RUNNING SEED METHODS***\n');
+			seed();
+		}, 
+		(error) => console.log('ERROR: ' + JSON.stringify(error)));;
+	}, 
+	(error) => console.log('ERROR: ' + JSON.stringify(error)));;
 
-if (config.triggerPath && config.triggerPath !== "")
-    lib.createTriggers(config.triggerPath, config);
-else
-    console.log(colors.yellow("Skip process triggers..."));
 
-if (config.documentPath && config.documentPath !== "")
-    lib.createDocuments(config.documentPath, config);
-else
-    console.log(colors.yellow("Skip process documents..."));
-
-if (config.userDefinedFunctionPath && config.userDefinedFunctionPath !== "")
-    lib.createUserDefinedFunctions(config.userDefinedFunctionPath, config);
-else
-    console.log(colors.yellow("Skip process user defined functions..."));
+var seed = function() {
+	if (config.storedProcPath && config.storedProcPath !== "")
+		lib.createStoredProcs(config.storedProcPath, config);
+	else
+		console.log(colors.yellow("Skip process stored procs..."));
+	
+	if (config.triggerPath && config.triggerPath !== "")
+		lib.createTriggers(config.triggerPath, config);
+	else
+		console.log(colors.yellow("Skip process triggers..."));
+	
+	if (config.documentPath && config.documentPath !== "")
+		lib.createDocuments(config.documentPath, config);
+	else
+		console.log(colors.yellow("Skip process documents..."));
+	
+	if (config.userDefinedFunctionPath && config.userDefinedFunctionPath !== "")
+		lib.createUserDefinedFunctions(config.userDefinedFunctionPath, config);
+	else
+		console.log(colors.yellow("Skip process user defined functions..."));	
+}
 
 function displayConfig(config){
     console.log(colors.green("Database Url: " + config.url));

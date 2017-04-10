@@ -25,7 +25,7 @@
   "dependencies": {
     "colors": "^1.1.2",
     "commander": "^2.9.0",
-    "documentdb": "^1.10.1",
+    "documentdb": "^1.11.0",
     "documentdb-q-promises": "^1.6.0",
     "json5": "^0.5.1",
     "jsonschema": "^1.1.1"
